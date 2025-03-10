@@ -2,8 +2,12 @@ export const dynamic = "force-dynamic";
 import { cars } from "@/app/lib/placeholder-data";
 import CatalogClient from "../ui/cars/CatalogClient";
 
-export default async function CatalogPage({ searchParams }: { searchParams: Promise<{ brand?: string; model?: string }> }) {
-  const { brand, model } = await searchParams;
+export default async function CatalogPage({
+  searchParams,
+}: {
+  searchParams: { brand?: string; model?: string } | Promise<{ brand?: string; model?: string }>;
+}) {
+  const { brand, model } = await Promise.resolve(searchParams);
   
   const brandParam = brand ?? "";
   const modelParam = model ?? "";
