@@ -12,7 +12,7 @@ export default function RootLayout({
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Levauto</title>
+        <title>Lebauto</title>
         <meta
           name="description"
           content="Concesionario de coches de segunda mano"
