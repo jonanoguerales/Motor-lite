@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import { cars } from "@/app/lib/placeholder-data";
 import CatalogClient from "../ui/cars/CatalogClient";
 
-export default async function CatalogPage({
+export default function CatalogPage({
   searchParams,
 }: {
   searchParams: { brand?: string; model?: string };
