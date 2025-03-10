@@ -5,9 +5,9 @@ import CatalogClient from "../ui/cars/CatalogClient";
 export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: { brand?: string; model?: string } | Promise<{ brand?: string; model?: string }>;
+  searchParams: unknown;
 }) {
-  const { brand, model } = await Promise.resolve(searchParams);
+  const { brand, model } = (await Promise.resolve(searchParams)) as { brand?: string; model?: string };
   
   const brandParam = brand ?? "";
   const modelParam = model ?? "";
