@@ -7,7 +7,7 @@ export default async function CatalogPage({
 }: {
   searchParams: { brand?: string; model?: string };
 }) {
-  const { brand, model } = await searchParams;
+  const { brand, model } = searchParams;
   
   const brandParam = brand ?? "";
   const modelParam = model ?? "";
