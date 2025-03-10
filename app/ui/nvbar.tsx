@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname(); // Detecta la ruta actual
+  const pathname = usePathname(); 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,7 +21,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Si está en `/`, usa fondo transparente, si no, usa fondo blanco directamente
   const isHome = pathname === "/";
   const navbarClasses = `fixed top-0 w-full z-50 px-6 py-4 transition-all duration-300 ${
     isHome
@@ -38,7 +37,7 @@ export default function Navbar() {
     <nav className={navbarClasses}>
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-        MotorÉlite
+        Levauto
         </Link>
         <div className="hidden md:flex gap-8">
           <Link href="/" className="hover:opacity-80">Inicio</Link>

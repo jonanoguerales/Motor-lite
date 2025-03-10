@@ -18,6 +18,9 @@ import { Search, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Car, CatalogClientProps } from "@/app/lib/definitions";
 
+import { Sidebar } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+
 export default function CatalogClient({
   allCars,
   initialCars,
@@ -224,306 +227,326 @@ export default function CatalogClient({
   // Para restringir teclado, p.ej. onKeyDown,
   // y además force "desde" <= "hasta" en handleFilter() con clamp.
   return (
-    <div className="container mx-auto mt-24">
-      <section className="bg-white p-4 shadow rounded-md space-y-4">
-        <div className="flex flex-wrap gap-4">
-          {/* ============ MARCA / MODELO ============ */}
-          <Popover
-            open={isOpen("brandModel")}
-            onOpenChange={(opening) => handleOpenChange("brandModel", opening)}
-          >
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="min-w-52 flex-1">
-                {brandModelLabel}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="p-4 w-72" side="bottom" sideOffset={8}>
-              {/* X arriba en otra linea */}
-              <div className="flex justify-end mb-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setOpenPopover(null)}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-
-              {/* Barra de búsqueda con X */}
-              <div className="relative mb-3">
-                <Search className="absolute left-2 top-2 h-4 w-4 text-gray-400" />
-                <Input
-                  className="pl-8"
-                  placeholder="Buscar marca..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                {searchTerm.length > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-2 top-2"
-                    onClick={() => setSearchTerm("")}
-                  >
-                    <X className="h-4 w-4" />
+    <SidebarProvider>
+      <div className="container mx-auto h-full flex min-h-screen">
+        {/* Barra lateral */}
+        <Sidebar className="w-64 bg-gray-800 text-white mt-16">
+          {/* Contenido de los filtros */}
+          <div className="p-4">
+            <h2 className="text-xl font-semibold mb-4">Filtros</h2>
+            <div className="flex flex-wrap gap-4 text-black">
+              {/* ============ MARCA / MODELO ============ */}
+              <Popover
+                open={isOpen("brandModel")}
+                onOpenChange={(opening) =>
+                  handleOpenChange("brandModel", opening)
+                }
+              >
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="min-w-52 flex-1">
+                    {brandModelLabel}
                   </Button>
-                )}
-              </div>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="p-4 w-72"
+                  side="bottom"
+                  sideOffset={8}
+                >
+                  {/* X arriba en otra linea */}
+                  <div className="flex justify-end mb-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setOpenPopover(null)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
 
-              {/* Lista de Marcas */}
-              <div className="max-h-64 overflow-auto space-y-2">
-                {uniqueBrands
-                  .filter((b) =>
-                    b.toLowerCase().includes(searchTerm.toLowerCase())
-                  )
-                  .map((b) => {
-                    const brandChecked = selectedBrands.includes(b);
-                    const models = brandModelsMap[b] || [];
-                    return (
-                      <div key={b} className="border p-2 rounded-md">
-                        <div className="flex items-center">
-                          <Checkbox
-                            id={b}
-                            checked={brandChecked}
-                            onCheckedChange={() => toggleBrand(b)}
-                          />
-                          <label htmlFor={b} className="ml-2 font-medium">
-                            {b}
-                          </label>
-                        </div>
-                        {brandChecked && (
-                          <div className="pl-4 mt-2 space-y-1">
-                            {models.map((m) => (
-                              <div key={m} className="flex items-center">
-                                <Checkbox
-                                  id={m}
-                                  checked={selectedModels.includes(m)}
-                                  onCheckedChange={() => toggleModel(m)}
-                                />
-                                <label htmlFor={m} className="ml-2">
-                                  {m}
-                                </label>
+                  {/* Barra de búsqueda con X */}
+                  <div className="relative mb-3">
+                    <Search className="absolute left-2 top-2 h-4 w-4 text-gray-400" />
+                    <Input
+                      className="pl-8"
+                      placeholder="Buscar marca..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    {searchTerm.length > 0 && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-2 top-2"
+                        onClick={() => setSearchTerm("")}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+
+                  {/* Lista de Marcas */}
+                  <div className="max-h-64 overflow-auto space-y-2">
+                    {uniqueBrands
+                      .filter((b) =>
+                        b.toLowerCase().includes(searchTerm.toLowerCase())
+                      )
+                      .map((b) => {
+                        const brandChecked = selectedBrands.includes(b);
+                        const models = brandModelsMap[b] || [];
+                        return (
+                          <div key={b} className="border p-2 rounded-md">
+                            <div className="flex items-center">
+                              <Checkbox
+                                id={b}
+                                checked={brandChecked}
+                                onCheckedChange={() => toggleBrand(b)}
+                              />
+                              <label htmlFor={b} className="ml-2 font-medium">
+                                {b}
+                              </label>
+                            </div>
+                            {brandChecked && (
+                              <div className="pl-4 mt-2 space-y-1">
+                                {models.map((m) => (
+                                  <div key={m} className="flex items-center">
+                                    <Checkbox
+                                      id={m}
+                                      checked={selectedModels.includes(m)}
+                                      onCheckedChange={() => toggleModel(m)}
+                                    />
+                                    <label htmlFor={m} className="ml-2">
+                                      {m}
+                                    </label>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
+                            )}
+                          </div>
+                        );
+                      })}
+                  </div>
+
+                  <div className="mt-3 flex justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        clearBrandModel();
+                        handleFilter();
+                      }}
+                    >
+                      Limpiar
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        acceptPopup();
+                      }}
+                    >
+                      Aceptar
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+              <RangeInputsPopover
+                popId="price"
+                label={priceLabel}
+                isOpen={isOpen}
+                handleOpenChange={handleOpenChange}
+                minVal={priceMin}
+                setMinVal={setPriceMin}
+                maxVal={priceMax}
+                setMaxVal={setPriceMax}
+                maxLimit={999999}
+                defaultMin={0}
+                defaultMax={100000}
+                clearFn={() => {
+                  /* ... limpiezas extra si hace falta ... */
+                }}
+                handleFilter={handleFilter}
+              />
+
+              <RangeInputsPopover
+                popId="year"
+                label={yearLabel}
+                isOpen={isOpen}
+                handleOpenChange={handleOpenChange}
+                minVal={yearMin}
+                setMinVal={setYearMin}
+                maxVal={yearMax}
+                setMaxVal={setYearMax}
+                maxLimit={new Date().getFullYear()}
+                defaultMin={1990}
+                defaultMax={new Date().getFullYear()}
+                clearFn={clearYear}
+                handleFilter={handleFilter}
+              />
+              <RangeInputsPopover
+                popId="km"
+                label={kmLabel}
+                isOpen={isOpen}
+                handleOpenChange={handleOpenChange}
+                minVal={kmMin}
+                setMinVal={setKmMin}
+                maxVal={kmMax}
+                setMaxVal={setKmMax}
+                maxLimit={999999}
+                defaultMin={0}
+                defaultMax={300000}
+                clearFn={clearKm}
+                handleFilter={handleFilter}
+              />
+
+              {/* ============ COLOR ============ */}
+              <ColorOrFuelPopover
+                popId="color"
+                label={colorLabel}
+                isOpen={isOpen}
+                handleOpenChange={handleOpenChange}
+                items={uniqueColors}
+                selectedItems={selectedColors}
+                toggleItem={toggleColor}
+                clearFn={() => {
+                  clearColors();
+                  handleFilter();
+                }}
+                handleFilter={handleFilter}
+              />
+
+              {/* ============ COMBUSTIBLE ============ */}
+              <ColorOrFuelPopover
+                popId="fuel"
+                label={fuelLabel}
+                isOpen={isOpen}
+                handleOpenChange={handleOpenChange}
+                items={uniqueFuels}
+                selectedItems={selectedFuels}
+                toggleItem={toggleFuel}
+                clearFn={() => {
+                  clearFuels();
+                  handleFilter();
+                }}
+                handleFilter={handleFilter}
+              />
+            </div>
+
+            <div className="flex justify-end gap-4 mt-4">
+              <Button
+                variant="destructive"
+                className="bg-transparent text-white"
+                onClick={clearAll}
+              >
+                Limpiar filtros
+              </Button>
+            </div>
+          </div>
+        </Sidebar>
+        <div className="flex-1 bg-white ml-6 mt-16">
+          {/* Botón para mostrar/ocultar la barra lateral en dispositivos móviles */}
+          <SidebarTrigger className="p-4 md:hidden">
+            <button className="text-gray-800">Mostrar Filtros</button>
+          </SidebarTrigger>
+          {/* LISTADO DE COCHES */}
+          {cars.length === 0 ? (
+            <p>No se encontraron coches con estos filtros.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {cars.map((vehicle) => (
+                <Link href={`/vehiculo/${vehicle.id}`} key={vehicle.id}>
+                  <Card className="overflow-hidden group">
+                    {/* Encima de la imagen: IVA + logo */}
+                    <div className="relative">
+                      <div className="absolute top-2 left-2 z-10 flex gap-2">
+                        {/* Ejemplo de IVA deducible */}
+                        {vehicle.ivaDeductible && (
+                          <Badge
+                            variant="secondary"
+                            className="bg-green-100 text-green-800"
+                          >
+                            IVA Deducible
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="absolute top-2 right-2 z-10 flex gap-2">
+                        {/* Logo Motorevo */}
+                        <Image
+                          src="/logo.webp"
+                          alt="Motorevo"
+                          width={30}
+                          height={30}
+                          className="rounded-full"
+                        />
+                      </div>
+                      <div className="relative h-48 overflow-hidden">
+                        <Image
+                          src={vehicle.image_url || "/coches/placeholder.svg"}
+                          alt={`${vehicle.brand} ${vehicle.model}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform group-hover:scale-105"
+                        />
+                        {/* Ejemplo: 1/7 imágenes */}
+                        {vehicle.images && vehicle.currentImage && (
+                          <div className="absolute bottom-2 right-2 bg-white/80 px-2 py-1 rounded text-sm">
+                            {vehicle.currentImage}/{vehicle.images}
                           </div>
                         )}
                       </div>
-                    );
-                  })}
-              </div>
-
-              <div className="mt-3 flex justify-end gap-2">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    clearBrandModel();
-                    handleFilter();
-                  }}
-                >
-                  Limpiar
-                </Button>
-                <Button
-                  onClick={() => {
-                    acceptPopup();
-                  }}
-                >
-                  Aceptar
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
-          <RangeInputsPopover
-            popId="price"
-            label={priceLabel}
-            isOpen={isOpen}
-            handleOpenChange={handleOpenChange}
-            minVal={priceMin}
-            setMinVal={setPriceMin}
-            maxVal={priceMax}
-            setMaxVal={setPriceMax}
-            maxLimit={999999}
-            defaultMin={0}
-            defaultMax={100000}
-            clearFn={() => {
-              /* ... limpiezas extra si hace falta ... */
-            }}
-            handleFilter={handleFilter}
-          />
-
-          <RangeInputsPopover
-            popId="year"
-            label={yearLabel}
-            isOpen={isOpen}
-            handleOpenChange={handleOpenChange}
-            minVal={yearMin}
-            setMinVal={setYearMin}
-            maxVal={yearMax}
-            setMaxVal={setYearMax}
-            maxLimit={new Date().getFullYear()}
-            defaultMin={1990}
-            defaultMax={new Date().getFullYear()}
-            clearFn={clearYear}
-            handleFilter={handleFilter}
-          />
-          <RangeInputsPopover
-            popId="km"
-            label={kmLabel}
-            isOpen={isOpen}
-            handleOpenChange={handleOpenChange}
-            minVal={kmMin}
-            setMinVal={setKmMin}
-            maxVal={kmMax}
-            setMaxVal={setKmMax}
-            maxLimit={999999}
-            defaultMin={0}
-            defaultMax={300000}
-            clearFn={clearKm}
-            handleFilter={handleFilter}
-          />
-
-          {/* ============ COLOR ============ */}
-          <ColorOrFuelPopover
-            popId="color"
-            label={colorLabel}
-            isOpen={isOpen}
-            handleOpenChange={handleOpenChange}
-            items={uniqueColors}
-            selectedItems={selectedColors}
-            toggleItem={toggleColor}
-            clearFn={() => {
-              clearColors();
-              handleFilter();
-            }}
-            handleFilter={handleFilter}
-          />
-
-          {/* ============ COMBUSTIBLE ============ */}
-          <ColorOrFuelPopover
-            popId="fuel"
-            label={fuelLabel}
-            isOpen={isOpen}
-            handleOpenChange={handleOpenChange}
-            items={uniqueFuels}
-            selectedItems={selectedFuels}
-            toggleItem={toggleFuel}
-            clearFn={() => {
-              clearFuels();
-              handleFilter();
-            }}
-            handleFilter={handleFilter}
-          />
-        </div>
-
-        <div className="flex justify-end gap-4 mt-4">
-          <Button
-            variant="destructive"
-            className="bg-transparent text-black hover:text-white"
-            onClick={clearAll}
-          >
-            Limpiar filtros
-          </Button>
-        </div>
-      </section>
-
-      {/* LISTADO DE COCHES */}
-      {cars.length === 0 ? (
-        <p>No se encontraron coches con estos filtros.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {cars.map((vehicle) => (
-            <Link href={`/vehiculo/${vehicle.id}`} key={vehicle.id}>
-              <Card className="overflow-hidden group">
-                {/* Encima de la imagen: IVA + logo */}
-                <div className="relative">
-                  <div className="absolute top-2 left-2 z-10 flex gap-2">
-                    {/* Ejemplo de IVA deducible */}
-                    {vehicle.ivaDeductible && (
-                      <Badge
-                        variant="secondary"
-                        className="bg-green-100 text-green-800"
-                      >
-                        IVA Deducible
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="absolute top-2 right-2 z-10 flex gap-2">
-                    {/* Logo Motorevo */}
-                    <Image
-                      src="/logo.webp"
-                      alt="Motorevo"
-                      width={30}
-                      height={30}
-                      className="rounded-full"
-                    />
-                  </div>
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={vehicle.image_url || "/coches/placeholder.svg"}
-                      alt={`${vehicle.brand} ${vehicle.model}`}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transition-transform group-hover:scale-105"
-                    />
-                    {/* Ejemplo: 1/7 imágenes */}
-                    {vehicle.images && vehicle.currentImage && (
-                      <div className="absolute bottom-2 right-2 bg-white/80 px-2 py-1 rounded text-sm">
-                        {vehicle.currentImage}/{vehicle.images}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Texto */}
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">
-                    {vehicle.brand} {vehicle.model}
-                  </h3>
-                  {vehicle.variant && (
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {vehicle.variant}
-                    </p>
-                  )}
-
-                  <div className="flex gap-2 text-sm text-muted-foreground mb-4">
-                    <span>{vehicle.fuel}</span>
-                    <span>•</span>
-                    <span>{vehicle.mileage} km</span>
-                    <span>•</span>
-                    <span>{vehicle.year}</span>
-                  </div>
-
-                  {/* Precio contado vs mensual */}
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <p className="text-sm text-muted-foreground">
-                        Precio al contado
-                      </p>
-                      <p className="text-xl font-bold">
-                        {vehicle.price.toLocaleString()} €
-                      </p>
                     </div>
-                    {vehicle.monthlyPrice && (
-                      <div className="text-right">
-                        <p className="text-green-600 font-bold text-xl">
-                          {vehicle.monthlyPrice.toLocaleString()} €
+
+                    {/* Texto */}
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold">
+                        {vehicle.brand} {vehicle.model}
+                      </h3>
+                      {vehicle.variant && (
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {vehicle.variant}
                         </p>
-                        <p className="text-sm text-muted-foreground">/ mes</p>
+                      )}
+
+                      <div className="flex gap-2 text-sm text-muted-foreground mb-4">
+                        <span>{vehicle.fuel}</span>
+                        <span>•</span>
+                        <span>{vehicle.mileage} km</span>
+                        <span>•</span>
+                        <span>{vehicle.year}</span>
                       </div>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            </Link>
-          ))}
+
+                      {/* Precio contado vs mensual */}
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <p className="text-sm text-muted-foreground">
+                            Precio al contado
+                          </p>
+                          <p className="text-xl font-bold">
+                            {vehicle.price.toLocaleString()} €
+                          </p>
+                        </div>
+                        {vehicle.monthlyPrice && (
+                          <div className="text-right">
+                            <p className="text-green-600 font-bold text-xl">
+                              {vehicle.monthlyPrice.toLocaleString()} €
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              / mes
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
+          <p className="py-96">No se encontraron coches con estos filtros.</p>
+          <p className="py-96">No se encontraron coches con estos filtros.</p>
+          <p className="py-96">No se encontraron coches con estos filtros.</p>
+          <p className="py-96">No se encontraron coches con estos filtros.</p>
+          <p className="py-96">No se encontraron coches con estos filtros.</p>
+          <p className="py-96">No se encontraron coches con estos filtros.</p>
         </div>
-      )}
-      <p className="py-96">No se encontraron coches con estos filtros.</p>
-      <p className="py-96">No se encontraron coches con estos filtros.</p>
-      <p className="py-96">No se encontraron coches con estos filtros.</p>
-      <p className="py-96">No se encontraron coches con estos filtros.</p>
-      <p className="py-96">No se encontraron coches con estos filtros.</p>
-      <p className="py-96">No se encontraron coches con estos filtros.</p>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 }
 

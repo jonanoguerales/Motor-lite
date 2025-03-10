@@ -9,6 +9,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Levauto</title>
+        <meta
+          name="description"
+          content="Concesionario de coches de segunda mano"
+        />
+      </head>
       <body className={`${inter.className} antialiased`}>
         <Navbar />
         {children}
