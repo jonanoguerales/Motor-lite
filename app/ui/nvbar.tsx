@@ -37,7 +37,7 @@ export default function Navbar() {
     <nav className={navbarClasses}>
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-        Levauto
+        Lebauto
         </Link>
         <div className="hidden md:flex gap-8">
           <Link href="/" className="hover:opacity-80">Inicio</Link>
