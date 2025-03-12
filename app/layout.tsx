@@ -1,6 +1,8 @@
-import "@/app/ui/global.css";
-import { inter } from "@/app/ui/fonts";
-import Navbar from "./ui/nvbar";
+import "./global.css";
+import { inter } from "@/components/fonts";
+import Footer from "@/components/footer";
+import Navbar from "@/components/nvbar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function RootLayout({
   children,
@@ -18,9 +20,11 @@ export default function RootLayout({
           content="Concesionario de coches de segunda mano"
         />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased flex flex-col min-h-screen overflow-x-hidden`}>
         <Navbar />
-        {children}
+        <main className="flex-1 w-screen">{children}</main>
+        <Footer />
+        <Toaster />
       </body>
     </html>
   );
