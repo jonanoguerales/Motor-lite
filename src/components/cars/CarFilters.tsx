@@ -55,7 +55,13 @@ export type Car = {
   mileage: number;
 };
 
-export default function CarFilters() {
+export default function CarFilters({
+  isOpen = false,
+  toggleMenu,
+}: {
+  isOpen?: boolean;
+  toggleMenu?: () => void;
+}) {
   const router = useRouter();
   const { toast } = useToast();
   const { clearFilters } = useFilterStore();
@@ -66,26 +72,45 @@ export default function CarFilters() {
   };
   const { allCars } = useFilterStore() as { allCars: Car[] };
 
-  const [minPrice, setMinPrice] = useState<string>(filters.minPrice?.toString() || "0");
-  const [maxPrice, setMaxPrice] = useState<string>(filters.maxPrice?.toString() || "100000");
-  const [minYear, setMinYear] = useState<string>(filters.minYear?.toString() || "1990");
+  const [minPrice, setMinPrice] = useState<string>(
+    filters.minPrice?.toString() || "0"
+  );
+  const [maxPrice, setMaxPrice] = useState<string>(
+    filters.maxPrice?.toString() || "100000"
+  );
+  const [minYear, setMinYear] = useState<string>(
+    filters.minYear?.toString() || "1990"
+  );
   const [maxYear, setMaxYear] = useState<string>(
     filters.maxYear?.toString() || new Date().getFullYear().toString()
   );
   const [minKm, setMinKm] = useState<string>(filters.minKm?.toString() || "0");
-  const [maxKm, setMaxKm] = useState<string>(filters.maxKm?.toString() || "500000");
+  const [maxKm, setMaxKm] = useState<string>(
+    filters.maxKm?.toString() || "500000"
+  );
 
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [expandedBrands, setExpandedBrands] = useState<Record<string, boolean>>({});
-  const [selectAllModelsState, setSelectAllModelsState] = useState<Record<string, boolean>>({});
+  const [expandedBrands, setExpandedBrands] = useState<Record<string, boolean>>(
+    {}
+  );
+  const [selectAllModelsState, setSelectAllModelsState] = useState<
+    Record<string, boolean>
+  >({});
 
   const lowerSearch = searchTerm.toLowerCase();
 
-  const uniqueBrands = useMemo(() => Array.from(new Set(allCars.map((car) => car.brand))), [allCars]);
+  const uniqueBrands = useMemo(
+    () => Array.from(new Set(allCars.map((car) => car.brand))),
+    [allCars]
+  );
   const modelsByBrand = useMemo(() => {
     const res: Record<string, string[]> = {};
     uniqueBrands.forEach((brand) => {
-      res[brand] = Array.from(new Set(allCars.filter((car) => car.brand === brand).map((car) => car.model)));
+      res[brand] = Array.from(
+        new Set(
+          allCars.filter((car) => car.brand === brand).map((car) => car.model)
+        )
+      );
     });
     return res;
   }, [allCars, uniqueBrands]);
@@ -93,33 +118,65 @@ export default function CarFilters() {
   const filteredBrands = useMemo(() => {
     return uniqueBrands.filter((brand) => {
       const brandMatches = brand.toLowerCase().includes(lowerSearch);
-      const modelMatches = modelsByBrand[brand].some((model) => model.toLowerCase().includes(lowerSearch));
+      const modelMatches = modelsByBrand[brand].some((model) =>
+        model.toLowerCase().includes(lowerSearch)
+      );
       return searchTerm === "" || brandMatches || modelMatches;
     });
   }, [uniqueBrands, lowerSearch, searchTerm, modelsByBrand]);
 
   const [showAllBrands, setShowAllBrands] = useState<boolean>(false);
-  const displayedBrands = useMemo(() => (showAllBrands ? filteredBrands : filteredBrands.slice(0, 6)), [filteredBrands, showAllBrands]);
+  const displayedBrands = useMemo(
+    () => (showAllBrands ? filteredBrands : filteredBrands.slice(0, 6)),
+    [filteredBrands, showAllBrands]
+  );
 
-  const uniqueColors = useMemo(() => Array.from(new Set(allCars.map((car) => car.color))), [allCars]);
-  const uniqueFuels = useMemo(() => Array.from(new Set(allCars.map((car) => car.fuel))), [allCars]);
-  const uniqueLocations = useMemo(() => Array.from(new Set(allCars.filter((car) => car.location).map((car) => car.location!))), [allCars]);
+  const uniqueColors = useMemo(
+    () => Array.from(new Set(allCars.map((car) => car.color))),
+    [allCars]
+  );
+  const uniqueFuels = useMemo(
+    () => Array.from(new Set(allCars.map((car) => car.fuel))),
+    [allCars]
+  );
+  const uniqueLocations = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          allCars.filter((car) => car.location).map((car) => car.location!)
+        )
+      ),
+    [allCars]
+  );
 
   useEffect(() => {
     const updateUrl = () => {
       const params = new URLSearchParams();
-      if (filters.brand && filters.brand.length > 0) params.set("brand", filters.brand.join(","));
-      if (filters.model && filters.model.length > 0) params.set("model", filters.model.join(","));
-      if (filters.color && filters.color.length > 0) params.set("color", filters.color.join(","));
-      if (filters.fuel && filters.fuel.length > 0) params.set("fuel", filters.fuel.join(","));
-      if (filters.location && filters.location.length > 0) params.set("location", filters.location.join(","));
-      if (filters.minPrice !== undefined) params.set("minPrice", filters.minPrice.toString());
-      if (filters.maxPrice !== undefined) params.set("maxPrice", filters.maxPrice.toString());
-      if (filters.minYear !== undefined) params.set("minYear", filters.minYear.toString());
-      if (filters.maxYear !== undefined) params.set("maxYear", filters.maxYear.toString());
-      if (filters.minKm !== undefined) params.set("minKm", filters.minKm.toString());
-      if (filters.maxKm !== undefined) params.set("maxKm", filters.maxKm.toString());
-      const newUrl = params.toString() ? `/coches-segunda-mano?${params.toString()}` : "/coches-segunda-mano";
+      if (filters.brand && filters.brand.length > 0)
+        params.set("brand", filters.brand.join(","));
+      if (filters.model && filters.model.length > 0)
+        params.set("model", filters.model.join(","));
+      if (filters.color && filters.color.length > 0)
+        params.set("color", filters.color.join(","));
+      if (filters.fuel && filters.fuel.length > 0)
+        params.set("fuel", filters.fuel.join(","));
+      if (filters.location && filters.location.length > 0)
+        params.set("location", filters.location.join(","));
+      if (filters.minPrice !== undefined)
+        params.set("minPrice", filters.minPrice.toString());
+      if (filters.maxPrice !== undefined)
+        params.set("maxPrice", filters.maxPrice.toString());
+      if (filters.minYear !== undefined)
+        params.set("minYear", filters.minYear.toString());
+      if (filters.maxYear !== undefined)
+        params.set("maxYear", filters.maxYear.toString());
+      if (filters.minKm !== undefined)
+        params.set("minKm", filters.minKm.toString());
+      if (filters.maxKm !== undefined)
+        params.set("maxKm", filters.maxKm.toString());
+      const newUrl = params.toString()
+        ? `/coches-segunda-mano?${params.toString()}`
+        : "/coches-segunda-mano";
       router.push(newUrl, { scroll: false });
     };
     const timeoutId = setTimeout(updateUrl, 500);
@@ -131,7 +188,8 @@ export default function CarFilters() {
     if (filters.brand) {
       filters.brand.forEach((brand) => {
         const modelsForBrand = modelsByBrand[brand] || [];
-        const modelsSelected = filters.model?.filter((m) => modelsForBrand.includes(m)) || [];
+        const modelsSelected =
+          filters.model?.filter((m) => modelsForBrand.includes(m)) || [];
         newState[brand] = modelsSelected.length === 0;
       });
     }
@@ -160,7 +218,11 @@ export default function CarFilters() {
     }
   };
 
-  const handleModelChange = (model: string, brand: string, checked: boolean) => {
+  const handleModelChange = (
+    model: string,
+    brand: string,
+    checked: boolean
+  ) => {
     if (checked) {
       if (filters.brand?.includes(brand)) {
         removeFilter("brand", brand);
@@ -169,7 +231,8 @@ export default function CarFilters() {
       setSelectAllModelsState((prev) => ({ ...prev, [brand]: false }));
     } else {
       removeFilter("model", model);
-      const modelsLeft = filters.model?.filter((m) => modelsByBrand[brand].includes(m)) || [];
+      const modelsLeft =
+        filters.model?.filter((m) => modelsByBrand[brand].includes(m)) || [];
       if (modelsLeft.length === 0) {
         setSelectAllModelsState((prev) => ({ ...prev, [brand]: false }));
       }
@@ -195,7 +258,12 @@ export default function CarFilters() {
     const min = Number.parseInt(minPrice) || 0;
     const max = Number.parseInt(maxPrice) || 1000000;
     if (min > max) {
-      toast({ title: "Error", description: "El valor mínimo no puede ser mayor que el máximo en Precio.", variant: "destructive" });
+      toast({
+        title: "Error",
+        description:
+          "El valor mínimo no puede ser mayor que el máximo en Precio.",
+        variant: "destructive",
+      });
       return;
     }
     setFilter("minPrice", min);
@@ -206,7 +274,11 @@ export default function CarFilters() {
     const min = Number.parseInt(minYear) || 1990;
     const max = Number.parseInt(maxYear) || new Date().getFullYear();
     if (min > max) {
-      toast({ title: "Error", description: "El año mínimo no puede ser mayor que el año máximo.", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "El año mínimo no puede ser mayor que el año máximo.",
+        variant: "destructive",
+      });
       return;
     }
     setFilter("minYear", min);
@@ -217,7 +289,12 @@ export default function CarFilters() {
     const min = Number.parseInt(minKm) || 0;
     const max = Number.parseInt(maxKm) || 500000;
     if (min > max) {
-      toast({ title: "Error", description: "Los kilómetros mínimos no pueden ser mayores que los máximos.", variant: "destructive" });
+      toast({
+        title: "Error",
+        description:
+          "Los kilómetros mínimos no pueden ser mayores que los máximos.",
+        variant: "destructive",
+      });
       return;
     }
     setFilter("minKm", min);
@@ -241,37 +318,63 @@ export default function CarFilters() {
   const getActiveFilters = (): { type: string; value: string }[] => {
     const active: { type: string; value: string }[] = [];
     if (filters.model && filters.model.length > 0) {
-      filters.model.forEach((model) => active.push({ type: "model", value: model }));
+      filters.model.forEach((model) =>
+        active.push({ type: "model", value: model })
+      );
     }
     if (filters.brand) {
       filters.brand.forEach((brand) => {
         const modelsForBrand = modelsByBrand[brand] || [];
-        const modelsSelected = filters.model?.filter((m) => modelsForBrand.includes(m)) || [];
-        if (modelsSelected.length === 0) active.push({ type: "brand", value: brand });
+        const modelsSelected =
+          filters.model?.filter((m) => modelsForBrand.includes(m)) || [];
+        if (modelsSelected.length === 0)
+          active.push({ type: "brand", value: brand });
       });
     }
     if (filters.color) {
-      filters.color.forEach((color) => active.push({ type: "color", value: color }));
+      filters.color.forEach((color) =>
+        active.push({ type: "color", value: color })
+      );
     }
     if (filters.fuel) {
-      filters.fuel.forEach((fuel) => active.push({ type: "fuel", value: fuel }));
+      filters.fuel.forEach((fuel) =>
+        active.push({ type: "fuel", value: fuel })
+      );
     }
     if (filters.location) {
-      filters.location.forEach((location) => active.push({ type: "location", value: location }));
+      filters.location.forEach((location) =>
+        active.push({ type: "location", value: location })
+      );
     }
     if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-      active.push({ type: "price", value: `Precio: ${filters.minPrice || 0}€ - ${filters.maxPrice || 1000000}€` });
+      active.push({
+        type: "price",
+        value: `Precio: ${filters.minPrice || 0}€ - ${
+          filters.maxPrice || 1000000
+        }€`,
+      });
     }
     if (filters.minYear !== undefined || filters.maxYear !== undefined) {
-      active.push({ type: "year", value: `Año: ${filters.minYear || 1990} - ${filters.maxYear || new Date().getFullYear()}` });
+      active.push({
+        type: "year",
+        value: `Año: ${filters.minYear || 1990} - ${
+          filters.maxYear || new Date().getFullYear()
+        }`,
+      });
     }
     if (filters.minKm !== undefined || filters.maxKm !== undefined) {
-      active.push({ type: "km", value: `Km: ${filters.minKm || 0} - ${filters.maxKm || 500000}` });
+      active.push({
+        type: "km",
+        value: `Km: ${filters.minKm || 0} - ${filters.maxKm || 500000}`,
+      });
     }
     return active;
   };
 
-  const activeFiltersArray = useMemo(() => getActiveFilters(), [filters, modelsByBrand, uniqueBrands]);
+  const activeFiltersArray = useMemo(
+    () => getActiveFilters(),
+    [filters, modelsByBrand, uniqueBrands]
+  );
 
   const handleRemoveFilter = (type: string, value: string) => {
     if (type === "brand") {
@@ -285,7 +388,8 @@ export default function CarFilters() {
       removeFilter("model", value);
       const brand = uniqueBrands.find((b) => modelsByBrand[b]?.includes(value));
       if (brand) {
-        const remaining = filters.model?.filter((m) => modelsByBrand[brand].includes(m)) || [];
+        const remaining =
+          filters.model?.filter((m) => modelsByBrand[brand].includes(m)) || [];
         if (remaining.length === 0 && filters.brand?.includes(brand)) {
           removeFilter("brand", brand);
           setSelectAllModelsState((prev) => ({ ...prev, [brand]: false }));
@@ -311,20 +415,41 @@ export default function CarFilters() {
 
   return (
     <div className="space-y-6 p-6">
-      <h2 className="text-xl font-semibold mb-4">Filtros</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-semibold">Filtros</h2>
+        {isOpen && (
+          <button
+            className="lg:hidden flex items-center justify-center "
+            onClick={toggleMenu}
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
+      </div>
       {activeFiltersArray.length > 0 && (
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-medium">Tu búsqueda</h3>
-            <Button variant="link" className="text-sm h-auto p-0" onClick={handleClearFilters}>
+            <Button
+              variant="link"
+              className="text-sm h-auto p-0"
+              onClick={handleClearFilters}
+            >
               Eliminar filtros
             </Button>
           </div>
           <div className="flex flex-wrap gap-2 mb-6">
             {activeFiltersArray.map((filter, index) => (
-              <Badge key={index} variant="secondary" className="flex items-center gap-1">
+              <Badge
+                key={index}
+                variant="secondary"
+                className="flex items-center gap-1"
+              >
                 {filter.value}
-                <button onClick={() => handleRemoveFilter(filter.type, filter.value)} className="ml-1 rounded-full hover:bg-muted p-0.5">
+                <button
+                  onClick={() => handleRemoveFilter(filter.type, filter.value)}
+                  className="ml-1 rounded-full hover:bg-muted p-0.5"
+                >
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
@@ -360,14 +485,15 @@ export default function CarFilters() {
                   </button>
                 )}
               </div>
-              <div className="space-y-4 max-h-64 overflow-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400">
+              <div className="space-y-4 max-h-96 overflow-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400">
                 {displayedBrands.map((brand) => {
                   const autoExpand =
                     searchTerm !== "" &&
                     modelsByBrand[brand].some((model) =>
                       model.toLowerCase().includes(lowerSearch)
                     );
-                  const isExpanded = autoExpand || expandedBrands[brand] || false;
+                  const isExpanded =
+                    autoExpand || expandedBrands[brand] || false;
                   return (
                     <div key={brand} className="space-y-2">
                       <div className="flex items-center justify-between">
@@ -389,20 +515,38 @@ export default function CarFilters() {
                             <Checkbox
                               id={`all-models-${brand}`}
                               checked={selectAllModelsState[brand] || false}
-                              onCheckedChange={(checked) => handleSelectAllModels(brand, checked === true)}
+                              onCheckedChange={(checked) =>
+                                handleSelectAllModels(brand, checked === true)
+                              }
                             />
-                            <Label htmlFor={`all-models-${brand}`} className="font-medium">
+                            <Label
+                              htmlFor={`all-models-${brand}`}
+                              className="font-medium"
+                            >
                               Todos los modelos
                             </Label>
                           </div>
                           {modelsByBrand[brand]?.map((model) => (
-                            <div key={`${brand}-${model}`} className="flex items-center space-x-2">
+                            <div
+                              key={`${brand}-${model}`}
+                              className="flex items-center space-x-2"
+                            >
                               <Checkbox
                                 id={`model-${brand}-${model}`}
-                                checked={filters.model?.includes(model) || false}
-                                onCheckedChange={(checked) => handleModelChange(model, brand, checked === true)}
+                                checked={
+                                  filters.model?.includes(model) || false
+                                }
+                                onCheckedChange={(checked) =>
+                                  handleModelChange(
+                                    model,
+                                    brand,
+                                    checked === true
+                                  )
+                                }
                               />
-                              <Label htmlFor={`model-${brand}-${model}`}>{model}</Label>
+                              <Label htmlFor={`model-${brand}-${model}`}>
+                                {model}
+                              </Label>
                             </div>
                           ))}
                         </div>
@@ -435,14 +579,28 @@ export default function CarFilters() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="min-price">Mínimo</Label>
-                  <Input id="min-price" type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} className="mt-1" />
+                  <Input
+                    id="min-price"
+                    type="number"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                    className="mt-1"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="max-price">Máximo</Label>
-                  <Input id="max-price" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="mt-1" />
+                  <Input
+                    id="max-price"
+                    type="number"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    className="mt-1"
+                  />
                 </div>
               </div>
-              <Button onClick={applyPriceRange} className="w-full">Aplicar</Button>
+              <Button onClick={applyPriceRange} className="w-full">
+                Aplicar
+              </Button>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -458,14 +616,28 @@ export default function CarFilters() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="min-year">Desde</Label>
-                  <Input id="min-year" type="number" value={minYear} onChange={(e) => setMinYear(e.target.value)} className="mt-1" />
+                  <Input
+                    id="min-year"
+                    type="number"
+                    value={minYear}
+                    onChange={(e) => setMinYear(e.target.value)}
+                    className="mt-1"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="max-year">Hasta</Label>
-                  <Input id="max-year" type="number" value={maxYear} onChange={(e) => setMaxYear(e.target.value)} className="mt-1" />
+                  <Input
+                    id="max-year"
+                    type="number"
+                    value={maxYear}
+                    onChange={(e) => setMaxYear(e.target.value)}
+                    className="mt-1"
+                  />
                 </div>
               </div>
-              <Button onClick={applyYearRange} className="w-full">Aplicar</Button>
+              <Button onClick={applyYearRange} className="w-full">
+                Aplicar
+              </Button>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -481,14 +653,28 @@ export default function CarFilters() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="min-km">Desde</Label>
-                  <Input id="min-km" type="number" value={minKm} onChange={(e) => setMinKm(e.target.value)} className="mt-1" />
+                  <Input
+                    id="min-km"
+                    type="number"
+                    value={minKm}
+                    onChange={(e) => setMinKm(e.target.value)}
+                    className="mt-1"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="max-km">Hasta</Label>
-                  <Input id="max-km" type="number" value={maxKm} onChange={(e) => setMaxKm(e.target.value)} className="mt-1" />
+                  <Input
+                    id="max-km"
+                    type="number"
+                    value={maxKm}
+                    onChange={(e) => setMaxKm(e.target.value)}
+                    className="mt-1"
+                  />
                 </div>
               </div>
-              <Button onClick={applyKmRange} className="w-full">Aplicar</Button>
+              <Button onClick={applyKmRange} className="w-full">
+                Aplicar
+              </Button>
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -503,7 +689,13 @@ export default function CarFilters() {
             <div className="space-y-2 py-2">
               {uniqueFuels.map((fuel) => (
                 <div key={fuel} className="flex items-center space-x-2">
-                  <Checkbox id={`fuel-${fuel}`} checked={filters.fuel?.includes(fuel) || false} onCheckedChange={(checked) => handleFuelChange(fuel, checked === true)} />
+                  <Checkbox
+                    id={`fuel-${fuel}`}
+                    checked={filters.fuel?.includes(fuel) || false}
+                    onCheckedChange={(checked) =>
+                      handleFuelChange(fuel, checked === true)
+                    }
+                  />
                   <Label htmlFor={`fuel-${fuel}`}>{fuel}</Label>
                 </div>
               ))}
@@ -521,14 +713,20 @@ export default function CarFilters() {
             <div className="space-y-2 py-2">
               {uniqueColors.map((color) => (
                 <div key={color} className="flex items-center space-x-2">
-                  <Checkbox id={`color-${color}`} checked={filters.color?.includes(color) || false} onCheckedChange={(checked) => handleColorChange(color, checked === true)} />
+                  <Checkbox
+                    id={`color-${color}`}
+                    checked={filters.color?.includes(color) || false}
+                    onCheckedChange={(checked) =>
+                      handleColorChange(color, checked === true)
+                    }
+                  />
                   <Label htmlFor={`color-${color}`}>{color}</Label>
                 </div>
               ))}
             </div>
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="ubicacion">
+        <AccordionItem value="ubicacion" className="mb-4">
           <AccordionTrigger className="py-3">
             <div className="flex items-center gap-2">
               <MapPin className="h-5 w-5" />
@@ -539,7 +737,13 @@ export default function CarFilters() {
             <div className="space-y-2 py-2">
               {uniqueLocations.map((location) => (
                 <div key={location} className="flex items-center space-x-2">
-                  <Checkbox id={`location-${location}`} checked={filters.location?.includes(location) || false} onCheckedChange={(checked) => handleLocationChange(location, checked === true)} />
+                  <Checkbox
+                    id={`location-${location}`}
+                    checked={filters.location?.includes(location) || false}
+                    onCheckedChange={(checked) =>
+                      handleLocationChange(location, checked === true)
+                    }
+                  />
                   <Label htmlFor={`location-${location}`}>{location}</Label>
                 </div>
               ))}

@@ -4,14 +4,8 @@
 
 #root {
   max-width: 1280px;
-  margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-
-::-webkit-scrollbar-thumb {
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
 }
 
 .logo {
@@ -41,6 +35,38 @@
     animation: logo-spin infinite 20s linear;
   }
 }
+
+/* Scrollbar para navegadores WebKit (Chrome, Safari) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Elimina las flechas de desplazamiento */
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Fondo blanco para el track y bordes redondeados */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #ffffff;
+  border-radius: 9999px;
+}
+
+/* Thumb con el color deseado, bordes redondeados y efecto de separación */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #888888; /* Cambia este valor por el color que quieras */
+  border-radius: 9999px;
+  /* Usamos box-shadow para simular un borde blanco */
+  box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+/* Opcional: para Firefox, aunque no se puede redondear tanto */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #888888 #ffffff;
+}
+
 
 .card {
   padding: 2em;

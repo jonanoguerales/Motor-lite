@@ -5,14 +5,20 @@ import dynamic from "next/dynamic";
 import { useViewStore, useFilterStore } from "@/lib/store";
 import type { CatalogClientProps } from "@/lib/definitions";
 import { Button } from "@/components/ui/button";
-import { Grid, List } from "lucide-react";
+import { Filter, Grid, List, X } from "lucide-react";
 import CarList from "./carList";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import CarFiltersSkeleton from "./CarFiltersSkeleton";
 
 const CarFilters = dynamic(() => import("./CarFilters"), {
   ssr: false,
-  loading: () => (
-    <div className="w-full lg:w-80 h-screen bg-gray-100 animate-pulse rounded-lg"></div>
-  ),
+  loading: () => <CarFiltersSkeleton />,
 });
 
 export default function CatalogClient({
@@ -22,16 +28,36 @@ export default function CatalogClient({
   model,
 }: CatalogClientProps) {
   const { view, setView } = useViewStore();
-  const {
-    setFilteredCars,
-    filteredCars,
-    setFilter,
-    setAllCars,
-    clearFilters,
-  } = useFilterStore();
+  const { setFilteredCars, filteredCars, setFilter, setAllCars, clearFilters } =
+    useFilterStore();
   const [isMounted, setIsMounted] = useState(false);
   const [sortOrder, setSortOrder] = useState("recent");
   const { isLoading } = useFilterStore();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    if (mediaQuery.matches) {
+      setView("list");
+    } else {
+      setView("grid");
+    }
+
+    const handleMediaQueryChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setView("list");
+      } else {
+        setView("grid");
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+    };
+  }, []);
 
   useEffect(() => {
     clearFilters();
@@ -68,27 +94,37 @@ export default function CatalogClient({
     setSortOrder(e.target.value);
   };
 
+  const toggleMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   if (!isMounted) return null;
 
   return (
     <div className="container mx-auto h-full flex flex-col lg:flex-row min-h-screen py-12 gap-8 mt-16">
-      <aside className="w-full lg:w-80 lg:min-w-80">
-        <div className="lg:sticky lg:top-24 bg-white rounded-lg shadow-md h-max">
+      <aside className="hidden lg:flex lg:w-80 lg:min-w-80">
+        <div className="lg:sticky w-full lg:top-24 bg-white rounded-lg shadow-md max-h-[calc(100vh-6rem)] overflow-y-auto custom-scrollbar">
           <CarFilters />
         </div>
       </aside>
-
+      {isOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div className="relative w-full bg-white max-h-screen overflow-y-auto">
+            <CarFilters isOpen={isOpen} toggleMenu={toggleMenu} />
+          </div>
+        </div>
+      )}
       <div className="flex-1">
-        <h1 className="text-3xl font-bold mb-12">
+        <h1 className="text-2xl lg:text-3xl font-bold mb-12">
           Concesionario de coches de segunda mano, de ocasión y km 0
         </h1>
 
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold">
+        <div className="flex flex-col-reverse sm:flex-row gap-4 justify-between items-center mb-8">
+          <h2 className="text-md md:text-lg lg:text-xl xl:text-2xl font-bold w-full">
             Se han encontrado {sortedCars.length} vehículo(s)
           </h2>
-          <div className="flex items-center gap-4">
-            <div className="flex gap-2">
+          <div className="flex items-center gap-4 w-full justify-end">
+            <div className="hidden lg:flex gap-2">
               <Button
                 variant={view === "grid" ? "default" : "outline"}
                 size="icon"
@@ -106,17 +142,38 @@ export default function CatalogClient({
                 <List className="h-4 w-4" />
               </Button>
             </div>
-
-            <select
-              className="border rounded-md px-4 py-2"
-              onChange={handleSortChange}
-              value={sortOrder}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleMenu}
+              aria-label="Vista en lista"
+              className="lg:hidden"
             >
-              <option value="recent">Los más recientes</option>
-              <option value="price-asc">Precio: menor a mayor</option>
-              <option value="price-desc">Precio: mayor a menor</option>
-              <option value="km-asc">Kilómetros: menor a mayor</option>
-            </select>
+              {isOpen ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Filter className="h-4 w-4" />
+              )}
+            </Button>
+
+            <Select
+              value={sortOrder}
+              onValueChange={(value) => setSortOrder(value)}
+            >
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Selecciona orden" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="recent">Los más recientes</SelectItem>
+                <SelectItem value="price-asc">Precio: menor a mayor</SelectItem>
+                <SelectItem value="price-desc">
+                  Precio: mayor a menor
+                </SelectItem>
+                <SelectItem value="km-asc">
+                  Kilómetros: menor a mayor
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
         <div
