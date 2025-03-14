@@ -113,12 +113,13 @@ function getFilteredCars(searchParams: {
   };
 }
 
-export default async function CatalogPage({
+export default function CatalogPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const params = searchParams;
+
   const { allCars, filteredCars } = getFilteredCars(params);
 
   const brand = Array.isArray(params.brand)
