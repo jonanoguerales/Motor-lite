@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useViewStore, useFilterStore } from "@/lib/store";
 import type { CatalogClientProps } from "@/lib/definitions";
 import { Button } from "@/components/ui/button";
-import { Filter, Grid, List, X } from "lucide-react";
+import { Filter, FilterX, Grid, List } from "lucide-react";
 import CarList from "./carList";
 import {
   Select,
@@ -150,7 +150,7 @@ export default function CatalogClient({
               className="lg:hidden"
             >
               {isOpen ? (
-                <X className="h-4 w-4" />
+                <FilterX className="h-4 w-4" />
               ) : (
                 <Filter className="h-4 w-4" />
               )}

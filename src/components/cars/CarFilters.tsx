@@ -598,7 +598,7 @@ export default function CarFilters({
                   />
                 </div>
               </div>
-              <Button onClick={applyPriceRange} className="w-full">
+              <Button onClick={applyPriceRange} className="w-full bg-gray-900">
                 Aplicar
               </Button>
             </div>
@@ -635,7 +635,7 @@ export default function CarFilters({
                   />
                 </div>
               </div>
-              <Button onClick={applyYearRange} className="w-full">
+              <Button onClick={applyYearRange} className="w-full bg-gray-900">
                 Aplicar
               </Button>
             </div>
@@ -672,7 +672,7 @@ export default function CarFilters({
                   />
                 </div>
               </div>
-              <Button onClick={applyKmRange} className="w-full">
+              <Button onClick={applyKmRange} className="w-full bg-gray-900">
                 Aplicar
               </Button>
             </div>
@@ -751,6 +751,9 @@ export default function CarFilters({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+          <Button onClick={toggleMenu} className="lg:hidden w-full bg-gray-900">
+          Ver resultados
+              </Button>
     </div>
   );
 }
