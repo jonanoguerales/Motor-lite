@@ -113,21 +113,17 @@ function getFilteredCars(searchParams: {
   };
 }
 
-export default function CatalogPage({
+
+export default async function CatalogPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: any;
 }) {
-  const params = searchParams;
-
+  const params = await Promise.resolve(searchParams);
   const { allCars, filteredCars } = getFilteredCars(params);
 
-  const brand = Array.isArray(params.brand)
-    ? params.brand.join(",")
-    : params.brand || "";
-  const model = Array.isArray(params.model)
-    ? params.model.join(",")
-    : params.model || "";
+  const brand = Array.isArray(params.brand) ? params.brand.join(",") : params.brand || "";
+  const model = Array.isArray(params.model) ? params.model.join(",") : params.model || "";
 
   return <CatalogClient allCars={allCars} initialCars={filteredCars} brand={brand} model={model} />;
 }

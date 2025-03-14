@@ -17,7 +17,7 @@ interface CarPageProps {
 }
 
 export default async function CarPage({ params }: CarPageProps) {
-  const { id } = params;
+  const { id } = await Promise.resolve(params)
   const car = cars.find((c) => c.id === id)
 
   if (!car) {
