@@ -113,18 +113,20 @@ function getFilteredCars(searchParams: {
   };
 }
 
-
 export default async function CatalogPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const params = await Promise.resolve(searchParams);
+  const params = searchParams;
   const { allCars, filteredCars } = getFilteredCars(params);
 
-  // Si se reciben parámetros, se usan para inicializar los filtros; si no, se muestran todos los coches
-  const brand = Array.isArray(params.brand) ? params.brand.join(",") : params.brand || "";
-  const model = Array.isArray(params.model) ? params.model.join(",") : params.model || "";
+  const brand = Array.isArray(params.brand)
+    ? params.brand.join(",")
+    : params.brand || "";
+  const model = Array.isArray(params.model)
+    ? params.model.join(",")
+    : params.model || "";
 
   return <CatalogClient allCars={allCars} initialCars={filteredCars} brand={brand} model={model} />;
 }
