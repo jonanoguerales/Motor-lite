@@ -9,6 +9,11 @@
   text-align: center;
 }
 
+::-webkit-scrollbar-thumb {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

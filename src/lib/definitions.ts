@@ -1,25 +1,46 @@
-type Car = {
+export interface Car {
   id: string;
   brand: string;
   model: string;
-  variant?: string;           // Ej. "1.6 TDI 115cv"
-  color: string;
-  fuel: string;
+  variant?: string;
   price: number;
-  mileage: number;
+  financePrice?: number;
+  monthlyPrice?: number;
+  fuel: string;
   year: number;
-  image_url: string;
-  images?: number;            // Cantidad total de imágenes (opcional)
-  currentImage?: number;      // Imagen actual (opcional)
-  monthlyPrice?: number;      // Precio financiado/mes (opcional)
-  ivaDeductible?: boolean;    // true o false
-};
+  power?: number;
+  location?: string;
+  condition?: string;
+  rating?: number;
+  ivaDeductible?: boolean;
+  images: string[]; // ahora es un array de rutas (URLs)
+  currentImage?: number; // índice de la imagen actual (opcional)
+  mileage: number;
+  transmission?: string;
+  color: string;
+  doors?: number;
+  features?: string[];
+  description?: string;
+}
 
-type CatalogClientProps = {
-  allCars: Car[]; // Para pop-ups (opciones completas)
-  initialCars: Car[]; // Filtrado SSR
-  brand: string; // Ej. "BMW,Audi"
-  model: string; // Ej. "Q3,Serie 3"
-};
+export interface CatalogClientProps {
+  allCars: Car[]
+  initialCars: Car[]
+  brand?: string | string[]
+  model?: string | string[]
+}
 
-export type { Car, CatalogClientProps };
+export interface FilterState {
+  brands: string[]
+  models: string[]
+  colors: string[]
+  fuels: string[]
+  locations: string[]
+  minPrice: number
+  maxPrice: number
+  minYear: number
+  maxYear: number
+  minKm: number
+  maxKm: number
+}
+

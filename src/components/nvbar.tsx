@@ -51,7 +51,7 @@ export default function Navbar() {
           <Link href="/coches-segunda-mano" className={`hover:opacity-80 border-b-4 ${pathname == "/coches-segunda-mano" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
             Coches de ocasión
           </Link>
-          <Link href="/financiacion" className={`hover:opacity-80 border-b-4 ${pathname == "/financiacion" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
+          <Link href="/catalogo" className={`hover:opacity-80 border-b-4 ${pathname == "/financiacion" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
             Financiación
           </Link>
           <Link href="/tasacion" className={`hover:opacity-80 border-b-4 ${pathname == "/tasacion" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
