@@ -10,14 +10,11 @@ import { CarCardSkeleton } from "@/components/cars/carSkeleton"
 export const dynamic = "force-dynamic"
 export const revalidate = 60 
 
-interface CarPageProps {
-  params: {
-    id: string
-  }
-}
-
-export default async function CarPage({ params }: CarPageProps) {
-  const { id } = await Promise.resolve(params)
+export default async function CarPage({ params }: {
+  params: any;
+}) {
+  const paramsResolved = await Promise.resolve(params)
+  const { id } = paramsResolved
   const car = cars.find((c) => c.id === id)
 
   if (!car) {
