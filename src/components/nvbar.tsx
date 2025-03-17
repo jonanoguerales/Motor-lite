@@ -48,16 +48,34 @@ export default function Navbar() {
           <Link href="/" className="hover:opacity-80">
             Inicio
           </Link>
-          <Link href="/coches-segunda-mano" className={`hover:opacity-80 border-b-4 ${pathname == "/coches-segunda-mano" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
+          <Link
+            href="/coches-segunda-mano"
+            className={`hover:opacity-80 border-b-4 ${
+              pathname == "/coches-segunda-mano"
+                ? "text-gray-800 font-semibold border-gray-800"
+                : "border-transparent"
+            }`}
+          >
             Coches de ocasión
           </Link>
-          <Link href="/catalogo" className={`hover:opacity-80 border-b-4 ${pathname == "/financiacion" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
-            Financiación
+          <Link
+            href="/gention-de-venta"
+            className={`hover:opacity-80 border-b-4 ${
+              pathname == "/gention-de-venta"
+                ? "text-gray-800 font-semibold border-gray-800"
+                : "border-transparent"
+            }`}
+          >
+            Gentión de venta
           </Link>
-          <Link href="/tasacion" className={`hover:opacity-80 border-b-4 ${pathname == "/tasacion" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
-            Tasación
-          </Link>
-          <Link href="/contacto" className={`hover:opacity-80 border-b-4 ${pathname == "/contacto" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}>
+          <Link
+            href="/contacto"
+            className={`hover:opacity-80 border-b-4 ${
+              pathname == "/contacto"
+                ? "text-gray-800 font-semibold border-gray-800"
+                : "border-transparent"
+            }`}
+          >
             Contacto
           </Link>
         </div>
@@ -71,39 +89,53 @@ export default function Navbar() {
       {menuOpen && (
         <div
           className={`md:hidden flex flex-col gap-4 px-8 py-4
-                      ${isHome && !scrolled && !menuOpen ? "bg-transparent text-white" : "bg-white text-black"}
-          `}>
+                      ${
+                        isHome && !scrolled && !menuOpen
+                          ? "bg-transparent text-white"
+                          : "bg-white text-black"
+                      }
+          `}
+        >
           <Link
             href="/"
-            className={`hover:opacity-80 border-b-4 ${pathname == "/" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}
+            className={`hover:opacity-80 border-b-4 ${
+              pathname == "/"
+                ? "text-gray-800 font-semibold border-gray-800"
+                : "border-transparent"
+            }`}
             onClick={() => setMenuOpen(false)}
           >
             Inicio
           </Link>
           <Link
             href="/coches-segunda-mano"
-            className={`hover:opacity-80 border-b-4 ${pathname == "/coches-segunda-mano" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}
+            className={`hover:opacity-80 border-b-4 ${
+              pathname == "/coches-segunda-mano"
+                ? "text-gray-800 font-semibold border-gray-800"
+                : "border-transparent"
+            }`}
             onClick={() => setMenuOpen(false)}
           >
             Coches de ocasión
           </Link>
           <Link
-            href="/financiacion"
-            className={`hover:opacity-80 border-b-4 ${pathname == "/financiacion" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}
+            href="/gention-de-venta"
+            className={`hover:opacity-80 border-b-4 ${
+              pathname == "/gention-de-venta"
+                ? "text-gray-800 font-semibold border-gray-800"
+                : "border-transparent"
+            }`}
             onClick={() => setMenuOpen(false)}
           >
-            Financiación
-          </Link>
-          <Link
-            href="/tasacion"
-            className={`hover:opacity-80 border-b-4 ${pathname == "/tasacion" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}
-            onClick={() => setMenuOpen(false)}
-          >
-            Tasación
+            Gentión de venta
           </Link>
           <Link
             href="/contacto"
-            className={`hover:opacity-80 border-b-4 ${pathname == "/contacto" ? "text-gray-800 font-semibold border-gray-800" : "border-transparent"}`}
+            className={`hover:opacity-80 border-b-4 ${
+              pathname == "/contacto"
+                ? "text-gray-800 font-semibold border-gray-800"
+                : "border-transparent"
+            }`}
             onClick={() => setMenuOpen(false)}
           >
             Contacto

@@ -14,9 +14,9 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import CarFiltersSkeleton from "./CarFiltersSkeleton";
+import CarFiltersSkeleton from "./carFiltersSkeleton";
 
-const CarFilters = dynamic(() => import("./CarFilters"), {
+const CarFilters = dynamic(() => import("./carFilters"), {
   ssr: false,
   loading: () => <CarFiltersSkeleton />,
 });
@@ -90,10 +90,6 @@ export default function CatalogClient({
     return cars;
   }, [filteredCars, sortOrder]);
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortOrder(e.target.value);
-  };
-
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
   };
@@ -110,7 +106,7 @@ export default function CatalogClient({
       {isOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="relative w-full bg-white max-h-screen overflow-y-auto">
-            <CarFilters isOpen={isOpen} toggleMenu={toggleMenu} />
+            <CarFilters isOpen={isOpen} toggleMenu={toggleMenu} sortedCars={sortedCars} />
           </div>
         </div>
       )}

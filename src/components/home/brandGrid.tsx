@@ -22,7 +22,7 @@ export default function BrandGrid() {
       {brands.map((brand, index) => (
         <Link
           key={brand.name}
-          href={`/catalogo?marca=${brand.name.toLowerCase()}`}
+          href={`/coches-segunda-mano?brand=${brand.name}`}
           className={`bg-gray-300 rounded-lg p-4 flex flex-col items-center gap-3 hover:shadow-md hover:border-gray-600 hover:border-4 border-4 border-transparent transition-shadow 
             ${index >= 6 ? "hidden md:flex" : ""}
             `}
