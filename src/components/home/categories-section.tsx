@@ -49,6 +49,7 @@ export default function CategoriesSection() {
                     height={120}
                     alt="Muestra catálogo de vehículos de ocasión"
                     className="absolute left-[-10px] bottom-[-25px]"
+                    priority
                   />
                 </div>
               </Link>
@@ -63,6 +64,7 @@ export default function CategoriesSection() {
                     height={120}
                     alt="Muestra catálogo de vehículos Km0"
                     className="absolute left-[-10px] bottom-[-30px]"
+                    priority
                   />
                 </div>
               </Link>
@@ -79,6 +81,7 @@ export default function CategoriesSection() {
                     height={120}
                     alt="Muestra catálogo de furgonetas"
                     className="absolute left-0 bottom-[-25px]"
+                    priority
                   />
                 </div>
               </Link>
@@ -95,6 +98,7 @@ export default function CategoriesSection() {
                     height={120}
                     alt="Muestra catálogo de Caravanas"
                     className="absolute left-[10px] bottom-[-25px]"
+                    priority
                   />
                 </div>
               </Link>
@@ -111,6 +115,7 @@ export default function CategoriesSection() {
                     height={60}
                     alt="Muestra catálogo de cargadores eléctricos"
                     className="absolute left-0 bottom-[-25px]"
+                    priority
                   />
                 </div>
               </Link>
