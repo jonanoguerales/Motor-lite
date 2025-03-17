@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		screens: {
+			'xxs': '420px', 
+			'xs': '520px',
+		  },
   		gridTemplateColumns: {
   			'13': 'repeat(13, minmax(0, 1fr))'
   		},

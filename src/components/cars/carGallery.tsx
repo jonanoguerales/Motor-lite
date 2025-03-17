@@ -22,7 +22,7 @@ export default function CarGallery({ images }: CarGalleryProps) {
 
   return (
     <div className="mb-8">
-      <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden">
+      <div className="relative h-[200px] xxs:h-[250px] xs:h-[300px] sm:h-[400px] md:h-[500px] rounded-lg overflow-hidden">
         <Image
           src={images[currentImage] || "/placeholder.svg"}
           alt="Imagen del vehículo"
