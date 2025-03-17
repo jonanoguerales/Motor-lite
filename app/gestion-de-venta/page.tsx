@@ -88,7 +88,7 @@ export default function SellCarPage() {
     <main className="min-h-screen bg-background scroll-smooth">
       <section className="relative mt-16 py-24 bg-gradient-to-br from-primary via-primary/90 to-primary/70 text-white overflow-hidden">
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:20px_20px]"></div>
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto relative z-10">
           <Link href="/" className="inline-flex items-center text-white/80 hover:text-white mb-8">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Volver a inicio
@@ -123,7 +123,7 @@ export default function SellCarPage() {
       </section>
 
       <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div
@@ -142,7 +142,7 @@ export default function SellCarPage() {
       </section>
 
       <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl font-bold mb-4">¿Cómo funciona?</h2>
             <p className="text-lg text-gray-600">
@@ -171,7 +171,7 @@ export default function SellCarPage() {
       </section>
 
       <section id="formulario" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
@@ -211,7 +211,7 @@ export default function SellCarPage() {
       </section>
 
       <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Preguntas frecuentes</h2>
 
@@ -254,7 +254,7 @@ export default function SellCarPage() {
       </section>
 
       <section className="py-20 bg-gradient-to-br from-primary to-primary/80 text-white">
-        <div className="container mx-auto px-4 text-center relative z-10">
+        <div className="container mx-auto text-center relative z-10">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold mb-6">¿Listo para vender tu coche?</h2>
             <p className="text-xl mb-8">
