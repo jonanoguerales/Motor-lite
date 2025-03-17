@@ -59,9 +59,9 @@ export default function Navbar() {
             Coches de ocasión
           </Link>
           <Link
-            href="/gention-de-venta"
+            href="/gestion-de-venta"
             className={`hover:opacity-80 border-b-4 ${
-              pathname == "/gention-de-venta"
+              pathname == "/gestion-de-venta"
                 ? "text-gray-800 font-semibold border-gray-800"
                 : "border-transparent"
             }`}
@@ -119,9 +119,9 @@ export default function Navbar() {
             Coches de ocasión
           </Link>
           <Link
-            href="/gention-de-venta"
+            href="/gestion-de-venta"
             className={`hover:opacity-80 border-b-4 ${
-              pathname == "/gention-de-venta"
+              pathname == "/gestion-de-venta"
                 ? "text-gray-800 font-semibold border-gray-800"
                 : "border-transparent"
             }`}

@@ -5,6 +5,7 @@ import CategoriesSection from "@/components/home/categories-section";
 import HeroSection from "@/components/home/hero-section";
 import SearchSection from "@/components/home/search-section";
 import Link from "next/link";
+import SellYourCarSection from "@/components/home/sellYourCarSection";
 
 export default function Page() {
   return (
@@ -12,6 +13,7 @@ export default function Page() {
       <HeroSection />
       <SearchSection />
       <CategoriesSection />
+      <SellYourCarSection />
       <section className="py-16 bg-muted/40">
         <div className="container mx-auto flex flex-col items-center gap-8">
           <h2 className="text-3xl md:text-4xl font-bold mb-12">
