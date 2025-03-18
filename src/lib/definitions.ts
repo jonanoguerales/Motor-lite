@@ -28,6 +28,15 @@ export interface CatalogClientProps {
   initialCars: Car[]
   brand?: string | string[]
   model?: string | string[]
+  fuel?: string;
+  color?: string;
+  location?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  minYear?: string;
+  maxYear?: string;
+  minKm?: string;
+  maxKm?: string;
 }
 
 export interface FilterState {

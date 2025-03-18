@@ -53,6 +53,15 @@ export default async function CatalogPage({ searchParams }: { searchParams: any}
       initialCars={filteredCars}
       brand={typeof params.brand === "string" ? params.brand : ""}
       model={typeof params.model === "string" ? params.model : ""}
+      fuel={typeof params.fuel === "string" ? params.fuel : ""}
+      color={typeof params.color === "string" ? params.color : ""}
+      location={typeof params.location === "string" ? params.location : ""}
+      minPrice={typeof params.minPrice === "string" ? params.minPrice : ""}
+      maxPrice={typeof params.maxPrice === "string" ? params.maxPrice : ""}
+      minYear={typeof params.minYear === "string" ? params.minYear : ""}
+      maxYear={typeof params.maxYear === "string" ? params.maxYear : ""}
+      minKm={typeof params.minKm === "string" ? params.minKm : ""}
+      maxKm={typeof params.maxKm === "string" ? params.maxKm : ""}
     />
   );
 }

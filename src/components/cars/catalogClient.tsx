@@ -20,6 +20,15 @@ export default function CatalogClient({
   initialCars,
   brand,
   model,
+  fuel,
+  color,
+  location,
+  maxKm,
+  minKm,
+  maxPrice,
+  minPrice,
+  maxYear,
+  minYear
 }: CatalogClientProps) {
   const { view, setView } = useViewStore();
   const { filteredCars, setFilteredCars, setFilter, setAllCars, clearFilters, isLoading } = useFilterStore();
@@ -39,6 +48,33 @@ export default function CatalogClient({
     }
     if (model) {
       modelArray.forEach((m) => setFilter("model", m));
+    }
+    if (fuel) {
+      fuel.split(",").forEach((f) => setFilter("fuel", f));
+    }
+    if (color) {
+      color.split(",").forEach((c) => setFilter("color", c));
+    }
+    if (location) {
+      location.split(",").forEach((l) => setFilter("location", l));
+    }
+    if (maxKm) {
+      setFilter("maxKm", maxKm);
+    }
+    if (minKm) {
+      setFilter("minKm", minKm);
+    }
+    if (maxPrice) {
+      setFilter("maxPrice", maxPrice);
+    }
+    if (minPrice) {
+      setFilter("minPrice", minPrice);
+    }
+    if (maxYear) {
+      setFilter("maxYear", maxYear);
+    }
+    if (minYear) {
+      setFilter("minYear", minYear);
     }
   
     setAllCars(allCars);
