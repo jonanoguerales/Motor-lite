@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Explora nuestra amplia selección de vehículos de segunda mano, de ocasión y km 0.",
 };
 
-async function getFilteredCars({searchParams} : { searchParams: any}) {
+async function getFilteredCars(searchParams: any) {
   let filteredCars = cars;
 
   const filters = ["brand", "model", "fuel", "color", "location"];
