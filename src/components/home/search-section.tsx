@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { cars } from "@/lib/placeholder-data";
 import { Search } from "lucide-react";
@@ -18,17 +18,13 @@ export default function SearchSection() {
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedModel, setSelectedModel] = useState("");
 
-  const uniqueBrands = Array.from(new Set(cars.map((car) => car.brand)));
-  const filteredModels =
-    selectedBrand === "all" || !selectedBrand
-      ? []
-      : Array.from(
-          new Set(
-            cars
-              .filter((car) => car.brand === selectedBrand)
-              .map((car) => car.model)
-          )
-        );
+  const uniqueBrands = useMemo(() => Array.from(new Set(cars.map((car) => car.brand))), []);
+  const filteredModels = useMemo(() =>
+    selectedBrand && selectedBrand !== "all"
+      ? Array.from(new Set(cars.filter((car) => car.brand === selectedBrand).map((car) => car.model)))
+      : [],
+    [selectedBrand]
+  );
 
   const handleSearch = () => {
     const query = new URLSearchParams();
@@ -38,12 +34,12 @@ export default function SearchSection() {
   };
 
   return (
-    <section className="relative z-10 -mt-16 pb-8">
+    <section className="relative z-10 -mt-16 pb-8" role="search">
       <div className="container mx-auto">
         <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Select onValueChange={setSelectedBrand}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full" aria-label="Seleccionar marca">
                 <SelectValue placeholder="Selecciona marca" />
               </SelectTrigger>
               <SelectContent>
@@ -57,7 +53,7 @@ export default function SearchSection() {
             </Select>
 
             <Select onValueChange={setSelectedModel}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full" aria-label="Seleccionar modelo">
                 <SelectValue placeholder="Selecciona modelo" />
               </SelectTrigger>
               <SelectContent>
@@ -69,10 +65,7 @@ export default function SearchSection() {
               </SelectContent>
             </Select>
 
-            <Button
-              onClick={handleSearch}
-              className="w-full bg-gray-900 hover:bg-gray-700 text-white px-8 text-lg"
-            >
+            <Button onClick={handleSearch} className="w-full bg-gray-900 hover:bg-gray-700 text-white px-8 text-lg" aria-label="Buscar coches">
               <Search className="mr-2 h-5 w-5" />
               Buscar
             </Button>

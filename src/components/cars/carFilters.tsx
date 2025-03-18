@@ -368,7 +368,7 @@ export default function CarFilters({
 
   return (
     <div className="space-y-6 p-6 flex flex-col justify-between h-full">
-      <div className="flex flex-col h-full overflow-x-hidden overflow-y-auto">
+      <div className="flex flex-col h-full overflow-x-hidden overflow-y-auto custom-scrollbar">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">Filtros</h2>
           {isOpen && (
@@ -441,7 +441,7 @@ export default function CarFilters({
                     </button>
                   )}
                 </div>
-                <div className="space-y-4 max-h-96 overflow-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-400">
+                <div className="space-y-4 max-h-96 overflow-auto custom-scrollbar">
                   {displayedBrands.map((brand) => {
                     const autoExpand =
                       searchTerm !== "" &&

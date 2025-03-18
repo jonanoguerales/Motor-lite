@@ -87,9 +87,9 @@ export default function SellCarForm() {
   return (
     <Card className="shadow-lg border-0">
       <CardContent className="p-6 md:p-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" aria-labelledby="sell-car-form-title">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Datos personales</h3>
+            <h3  id="sell-car-form-title" className="text-lg font-semibold">Datos personales</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">

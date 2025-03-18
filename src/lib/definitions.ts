@@ -43,4 +43,3 @@ export interface FilterState {
   minKm: number
   maxKm: number
 }
-

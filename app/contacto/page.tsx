@@ -4,6 +4,17 @@ import Map from "@/components/map";
 import { Button } from "@/components/ui/button";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
+export const metadata = {
+  title: "Contacto | Lebauto Concesionario",
+  description:
+    "Ponte en contacto con Lebauto para cualquier consulta sobre nuestros coches de segunda mano y ocasión.",
+  openGraph: {
+    title: "Contacto | Lebauto Concesionario",
+    description:
+      "Consulta con nuestro equipo sobre cualquier vehículo de nuestro catálogo de segunda mano y ocasión.",
+  },
+};
+
 export default function ContactPage() {
   return (
     <>
@@ -19,11 +30,16 @@ export default function ContactPage() {
               variant="outline"
               size="lg"
               className="bg-transparent border-white hover:bg-white hover:text-primary"
+              asChild
             >
-              <Phone className="mr-2 h-4 w-4" /> Llamar ahora
+              <a href="tel:+34912345678">
+                <Phone className="mr-2 h-4 w-4" /> Llamar ahora
+              </a>
             </Button>
-            <Button variant="secondary" size="lg">
-              <Mail className="mr-2 h-4 w-4" /> Enviar email
+            <Button variant="secondary" size="lg" asChild>
+              <a href="mailto:info@lebauto.com">
+                <Mail className="mr-2 h-4 w-4" /> Enviar email
+              </a>
             </Button>
           </div>
         </div>

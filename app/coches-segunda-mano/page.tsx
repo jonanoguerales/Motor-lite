@@ -6,124 +6,53 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Coches de segunda mano - Concesionario",
-  description:
-    "Explora nuestra amplia selección de vehículos de segunda mano, de ocasión y km 0",
+  description: "Explora nuestra amplia selección de vehículos de segunda mano, de ocasión y km 0.",
 };
 
-function getFilteredCars(searchParams: {
-  brand?: string;
-  model?: string;
-  minPrice?: string;
-  maxPrice?: string;
-  fuel?: string;
-  color?: string;
-  minYear?: string;
-  maxYear?: string;
-  minKm?: string;
-  maxKm?: string;
-  location?: string;
-}) {
-  let filteredCars = [...cars];
+async function getFilteredCars(searchParams: Record<string, string | number | boolean | string[] | undefined>) {
+  let filteredCars = cars;
 
-  const brandParam = searchParams.brand ?? "";
-  const modelParam = searchParams.model ?? "";
-  const fuelParam = searchParams.fuel ?? "";
-  const colorParam = searchParams.color ?? "";
-  const locationParam = searchParams.location ?? "";
-
-  if (brandParam || modelParam) {
-    const brandArray = brandParam ? brandParam.split(",").filter(Boolean) : [];
-    const modelArray = modelParam ? modelParam.split(",").filter(Boolean) : [];
-
-    let brandFiltered: typeof cars = [];
-    if (brandArray.length > 0) {
-      brandFiltered = filteredCars.filter((car) =>
-        brandArray.includes(car.brand)
-      );
+  const filters = ["brand", "model", "fuel", "color", "location"];
+  filters.forEach((key) => {
+    const paramValue = searchParams[key];
+    if (typeof paramValue === "string") {
+      const values = paramValue.split(",").map(v => v.trim());
+      filteredCars = filteredCars.filter(car => values.includes(String(car[key as keyof typeof car] || "")));
     }
+  });
 
-    let modelFiltered: typeof cars = [];
-    if (modelArray.length > 0) {
-      modelFiltered = filteredCars.filter((car) =>
-        modelArray.includes(car.model)
-      );
-    }
-
-    const unionSet = new Set([...brandFiltered, ...modelFiltered]);
-    filteredCars = [...unionSet];
+  if (typeof searchParams.minPrice === "string") {
+    filteredCars = filteredCars.filter(car => car.price >= Number(searchParams.minPrice));
   }
-
-  if (fuelParam) {
-    const fuelArray = fuelParam.split(",").filter(Boolean);
-    filteredCars = filteredCars.filter((car) => fuelArray.includes(car.fuel));
+  if (typeof searchParams.maxPrice === "string") {
+    filteredCars = filteredCars.filter(car => car.price <= Number(searchParams.maxPrice));
   }
-
-  if (colorParam) {
-    const colorArray = colorParam.split(",").filter(Boolean);
-    filteredCars = filteredCars.filter((car) => colorArray.includes(car.color));
+  if (typeof searchParams.minYear === "string") {
+    filteredCars = filteredCars.filter(car => car.year >= Number(searchParams.minYear));
   }
-
-  if (locationParam) {
-    const locationArray = locationParam.split(",").filter(Boolean);
-    filteredCars = filteredCars.filter(
-      (car) => car.location && locationArray.includes(car.location)
-    );
+  if (typeof searchParams.maxYear === "string") {
+    filteredCars = filteredCars.filter(car => car.year <= Number(searchParams.maxYear));
+  }
+  if (typeof searchParams.minKm === "string") {
+    filteredCars = filteredCars.filter(car => car.mileage >= Number(searchParams.minKm));
+  }
+  if (typeof searchParams.maxKm === "string") {
+    filteredCars = filteredCars.filter(car => car.mileage <= Number(searchParams.maxKm));
   }
 
-  if (searchParams.minPrice) {
-    const minPrice = Number(searchParams.minPrice);
-    filteredCars = filteredCars.filter((car) => car.price >= minPrice);
-  }
-  if (searchParams.maxPrice) {
-    const maxPrice = Number(searchParams.maxPrice);
-    filteredCars = filteredCars.filter((car) => car.price <= maxPrice);
-  }
-
-  if (searchParams.minYear) {
-    const minYear = Number(searchParams.minYear);
-    filteredCars = filteredCars.filter((car) => car.year >= minYear);
-  }
-  if (searchParams.maxYear) {
-    const maxYear = Number(searchParams.maxYear);
-    filteredCars = filteredCars.filter((car) => car.year <= maxYear);
-  }
-
-  if (searchParams.minKm) {
-    const minKm = Number(searchParams.minKm);
-    filteredCars = filteredCars.filter((car) => car.mileage >= minKm);
-  }
-  if (searchParams.maxKm) {
-    const maxKm = Number(searchParams.maxKm);
-    filteredCars = filteredCars.filter((car) => car.mileage <= maxKm);
-  }
-
-  return {
-    allCars: cars,
-    filteredCars,
-  };
+  return { allCars: cars, filteredCars };
 }
 
-export default async function CatalogPage({
-  searchParams,
-}: {
-  searchParams: any;
-}) {
+export default async function CatalogPage({ searchParams }: { searchParams: Record<string, string | number | boolean | string[] | undefined> }) {
   const params = await Promise.resolve(searchParams);
-  const { allCars, filteredCars } = getFilteredCars(params);
-
-  const brand = Array.isArray(params.brand)
-    ? params.brand.join(",")
-    : params.brand || "";
-  const model = Array.isArray(params.model)
-    ? params.model.join(",")
-    : params.model || "";
+  const { allCars, filteredCars } = await getFilteredCars(params);
 
   return (
     <CatalogClient
       allCars={allCars}
       initialCars={filteredCars}
-      brand={brand}
-      model={model}
+      brand={typeof params.brand === "string" ? params.brand : ""}
+      model={typeof params.model === "string" ? params.model : ""}
     />
   );
 }

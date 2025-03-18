@@ -10,9 +10,16 @@ import Link from "next/link";
 
 export default function CategoriesSection() {
   return (
-    <section className="bg-white py-32">
+    <section
+      className="bg-white py-32"
+      role="region"
+      aria-labelledby="categories-title"
+    >
       <div className="container mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+        <h2
+          id="categories-title"
+          className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center"
+        >
           Nuestras Categorías
         </h2>
         <Carousel className="w-full max-w-5xl mx-auto">
@@ -38,7 +45,10 @@ export default function CategoriesSection() {
               </Link>
             </CarouselItem>
             <CarouselItem className="pl-4 sm:basis-1/2 md:basis-1/4 lg:basis-1/6">
-              <Link href="/coches-segunda-mano">
+              <Link
+                href="/coches-segunda-mano"
+                aria-label="Ver coches de la categoría Ocasión"
+              >
                 <div className="relative bg-gray-900 rounded-xl p-6 shadow-lg hover:bg-gray-700 transition-colors h-32">
                   <h3 className="text-xl font-semibold mb-2 text-white">
                     Ocasión
@@ -55,7 +65,10 @@ export default function CategoriesSection() {
               </Link>
             </CarouselItem>
             <CarouselItem className="pl-4 sm:basis-1/2 md:basis-1/4 lg:basis-1/6">
-              <Link href="/coches-segunda-mano">
+              <Link
+                href="/coches-segunda-mano"
+                aria-label="Ver coches de la categoría Km0"
+              >
                 <div className="relative bg-gray-900 rounded-xl p-6 shadow-lg hover:bg-gray-700 transition-colors h-32">
                   <h3 className="text-xl font-semibold mb-2 text-white">Km0</h3>
                   <Image
@@ -70,7 +83,10 @@ export default function CategoriesSection() {
               </Link>
             </CarouselItem>
             <CarouselItem className="pl-4 sm:basis-1/2 md:basis-1/4 lg:basis-1/6">
-              <Link href="/coches-segunda-mano">
+              <Link
+                href="/coches-segunda-mano"
+                aria-label="Ver coches de la categoría Furgonetas"
+              >
                 <div className="relative bg-gray-900 rounded-xl p-6 shadow-lg hover:bg-gray-700 transition-colors h-32">
                   <h3 className="text-xl font-semibold mb-2 text-white">
                     Furgonetas
@@ -87,7 +103,10 @@ export default function CategoriesSection() {
               </Link>
             </CarouselItem>
             <CarouselItem className="pl-4 sm:basis-1/2 md:basis-1/4 lg:basis-1/6">
-              <Link href="/coches-segunda-mano">
+              <Link
+                href="/coches-segunda-mano"
+                aria-label="Ver coches de la categoría Caravanas"
+              >
                 <div className="relative bg-gray-900 rounded-xl p-6 shadow-lg hover:bg-gray-700 transition-colors h-32">
                   <h3 className="text-xl font-semibold mb-2 text-white">
                     Caravanas
@@ -104,7 +123,10 @@ export default function CategoriesSection() {
               </Link>
             </CarouselItem>
             <CarouselItem className="pl-4 sm:basis-1/2 md:basis-1/4 lg:basis-1/6">
-              <Link href="/coches-segunda-mano">
+              <Link
+                href="/coches-segunda-mano"
+                aria-label="Ver coches de la categoría Cargadores"
+              >
                 <div className="relative bg-gray-900 rounded-xl p-6 shadow-lg hover:bg-gray-700 transition-colors h-32">
                   <h3 className="text-xl font-semibold mb-2 text-white">
                     Cargadores

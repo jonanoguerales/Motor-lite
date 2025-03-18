@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,9 +19,7 @@ export default function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -33,25 +29,12 @@ export default function ContactForm() {
     setIsSubmitting(true);
 
     try {
-      // Aquí iría la lógica para enviar el formulario por email
-      // Por ejemplo, usando un Server Action o una API
-
-      // Simulamos un envío exitoso
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
       toast({
         title: "Formulario enviado",
         description: "Nos pondremos en contacto contigo lo antes posible.",
       });
-
-      // Resetear el formulario
-      setFormData({
-        name: "",
-        surnames: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
+      setFormData({ name: "", surnames: "", email: "", phone: "", message: "" });
     } catch (error) {
       toast({
         title: "Error al enviar",
@@ -66,91 +49,40 @@ export default function ContactForm() {
   return (
     <Card className="shadow-lg border-0">
       <CardContent className="p-6 md:p-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" aria-labelledby="contact-form-title">
+          <h3 id="contact-form-title" className="text-lg font-semibold">Formulario de contacto</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-base">
-                Nombre
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Tu nombre"
-                className="h-12"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="surnames" className="text-base">
-                Apellidos
-              </Label>
-              <Input
-                id="surnames"
-                name="surnames"
-                value={formData.surnames}
-                onChange={handleChange}
-                placeholder="Apellidos"
-                className="h-12"
-                required
-              />
-            </div>
+            <InputGroup id="name" label="Nombre" value={formData.name} onChange={handleChange} required />
+            <InputGroup id="surnames" label="Apellidos" value={formData.surnames} onChange={handleChange} required />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-base">
-                Email
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="tu@email.com"
-                className="h-12"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="phone" className="text-base">
-                Teléfono
-              </Label>
-              <Input
-                id="phone"
-                name="phone"
-                type="tel"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="123 456 789"
-                className="h-12"
-              />
-            </div>
+            <InputGroup id="email" label="Email" type="email" value={formData.email} onChange={handleChange} required />
+            <InputGroup id="phone" label="Teléfono" type="tel" value={formData.phone} onChange={handleChange} />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="message" className="text-base">
-              Mensaje
-            </Label>
-            <Textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Escribe tu mensaje aquí..."
-              rows={6}
-              required
-            />
-          </div>
-          <Button
-            type="submit"
-            className="w-full h-12 text-base"
-            disabled={isSubmitting}
-          >
+          <TextareaGroup id="message" label="Mensaje" value={formData.message} onChange={handleChange} required />
+          <Button type="submit" className="w-full h-12 text-base" disabled={isSubmitting}>
             {isSubmitting ? "Enviando..." : "Enviar mensaje"}
           </Button>
         </form>
       </CardContent>
     </Card>
+  );
+}
+
+function InputGroup({ id, label, type = "text", value, onChange, required = false }: any) {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id}>{label}</Label>
+      <Input id={id} name={id} type={type} value={value} onChange={onChange} placeholder={`Introduce tu ${label.toLowerCase()}`} required={required} />
+    </div>
+  );
+}
+
+function TextareaGroup({ id, label, value, onChange, required = false }: any) {
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id}>{label}</Label>
+      <Textarea id={id} name={id} value={value} onChange={onChange} placeholder={`Escribe tu ${label.toLowerCase()} aquí...`} rows={6} required={required} />
+    </div>
   );
 }

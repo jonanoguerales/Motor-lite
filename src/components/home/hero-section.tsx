@@ -3,7 +3,10 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[60vh] flex items-center overflow-hidden">
+    <section
+      className="relative min-h-[60vh] flex items-center overflow-hidden"
+      role="banner"
+    >
       <Image
         src="/imgHome.avif"
         alt="Luxury Car"
@@ -22,8 +25,12 @@ export default function HeroSection() {
           <p className="text-lg md:text-xl text-gray-300">
             Los mejores coches de segunda mano con garantía y al mejor precio
           </p>
-          <Link href="/coches-segunda-mano" className="bg-white text-black font-semibold px-8 py-2 text-base md:text-lg rounded-[0.5rem] hover:opacity-80 w-max">
-          Ver catálogo
+          <Link
+            href="/coches-segunda-mano"
+            className="bg-white text-black font-semibold px-8 py-2 text-base md:text-lg rounded-[0.5rem] hover:opacity-80 w-max"
+            aria-label="Ver catálogo de coches de segunda mano"
+          >
+            Ver catálogo
           </Link>
         </div>
       </div>

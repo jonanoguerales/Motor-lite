@@ -10,31 +10,25 @@ interface CarCardGridProps {
 }
 
 export default function CarCardGrid({ car }: CarCardGridProps) {
-  const mainImage = car.images && car.images.length > 0
-    ? car.images[0]
-    : "/placeholder.svg";
+  const mainImage = car.images?.[0] || "/placeholder.svg";
 
   return (
     <Link
       href={`/vehiculo/${car.id}`}
       className="block bg-card rounded-lg border shadow-sm hover:shadow-md transition-shadow animate-fade-in"
+      aria-label={`Ver detalles del ${car.brand} ${car.model}`}
     >
       <div className="relative">
         <div className="absolute top-2 right-2 z-10">
-        <Image
-              src="/logo.webp"
-              width={32}
-              height={32}
-              alt="Logo empresa"
-              className="rounded-full"
-            />
+          <Image src="/logo.webp" width={32} height={32} alt="Logo empresa" className="rounded-full" />
         </div>
         <div className="relative h-48">
           <Image
             src={mainImage}
-            alt={`${car.brand} ${car.model}`}
+            alt={`Imagen del ${car.brand} ${car.model}`}
             fill
             className="object-cover rounded-t-lg"
+            loading="lazy"
           />
           <div className="absolute bottom-2 right-2 bg-black/60 text-white px-2 py-1 rounded text-sm">
             1/{car.images?.length || 0}
@@ -44,9 +38,7 @@ export default function CarCardGrid({ car }: CarCardGridProps) {
 
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="font-semibold">
-            {car.brand} {car.model}
-          </h3>
+          <h3 className="font-semibold">{car.brand} {car.model}</h3>
           <div className="flex items-center gap-1">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
             <span className="text-sm">{car.rating}</span>
@@ -56,22 +48,10 @@ export default function CarCardGrid({ car }: CarCardGridProps) {
         <p className="text-sm text-muted-foreground mb-4">{car.variant}</p>
 
         <div className="grid grid-cols-2 gap-2 text-sm mb-4">
-          <div>
-            <p className="text-muted-foreground">Combustible</p>
-            <p className="font-medium">{car.fuel}</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Año</p>
-            <p className="font-medium">{car.year}</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Potencia</p>
-            <p className="font-medium">{car.power} CV</p>
-          </div>
-          <div>
-            <p className="text-muted-foreground">Ubicación</p>
-            <p className="font-medium">{car.location}</p>
-          </div>
+          <InfoItem label="Combustible" value={car.fuel} />
+          <InfoItem label="Año" value={car.year.toString()} />
+          <InfoItem label="Potencia" value={`${car.power} CV`} />
+          <InfoItem label="Ubicación" value={car.location || "Desconocida"} />
         </div>
 
         <div className="flex flex-wrap gap-2 mb-4">
@@ -82,11 +62,20 @@ export default function CarCardGrid({ car }: CarCardGridProps) {
 
         <div className="border-t pt-4">
           <div className="flex justify-between items-baseline mb-2">
-            <p className="text-xl font-bold text-primary">{formatPrice(car?.price || 0)} €</p>
-            <p className="text-sm text-muted-foreground">{formatPrice(car?.monthlyPrice || 0)} €/mes*</p>
+            <p className="text-xl font-bold text-primary">{formatPrice(car.price)} €</p>
+            <p className="text-sm text-muted-foreground">{formatPrice(car.monthlyPrice || 0)} €/mes*</p>
           </div>
         </div>
       </div>
     </Link>
+  );
+}
+
+function InfoItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <p className="text-muted-foreground">{label}</p>
+      <p className="font-medium">{value}</p>
+    </div>
   );
 }

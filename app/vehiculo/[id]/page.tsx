@@ -1,32 +1,52 @@
-import { notFound } from "next/navigation"
-import { cars } from "@/lib/placeholder-data"
-import CarGallery from "@/components/cars/carGallery"
-import CarInfo from "@/components/cars/carInfo"
-import CarFeatures from "@/components/cars/carFeatures"
-import CarContact from "@/components/cars/carContact"
-import { Suspense } from "react"
-import { CarCardSkeleton } from "@/components/cars/carSkeleton"
+import { notFound } from "next/navigation";
+import { cars } from "@/lib/placeholder-data";
+import CarGallery from "@/components/cars/carGallery";
+import CarInfo from "@/components/cars/carInfo";
+import CarFeatures from "@/components/cars/carFeatures";
+import CarContact from "@/components/cars/carContact";
+import { Suspense } from "react";
+import { CarCardSkeleton } from "@/components/cars/carSkeleton";
+import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic"
-export const revalidate = 60 
+async function fetchCar(id: string) {
+  return cars.find((c) => c.id === id) || null;
+}
 
-export default async function CarPage({ params }: {
-  params: any;
-}) {
-  const paramsResolved = await Promise.resolve(params)
-  const { id } = paramsResolved
-  const car = cars.find((c) => c.id === id)
+export async function generateMetadata({ params }: { params: Record<string, string> }): Promise<Metadata> {
+  const resolvedParams = await Promise.resolve(params);
+  const { id } = resolvedParams;
+  const car = await fetchCar(id);
 
   if (!car) {
-    notFound()
+    return {
+      title: "Vehículo no encontrado",
+      description: "Este vehículo no se encuentra disponible en nuestra base de datos.",
+    };
   }
+
+  return {
+    title: `${car.brand} ${car.model} ${car.variant || ""} - Lebauto`,
+    description: `Compra este ${car.brand} ${car.model} del año ${car.year} con ${car.mileage.toLocaleString()} km, disponible por solo ${car.price.toLocaleString()}€ en Lebauto.`,
+    openGraph: {
+      images: car.images?.[0] || "/placeholder.svg",
+    },
+  };
+}
+
+export default async function CarPage({ params }: { params: Record<string, string> }) {
+  const resolvedParams = await Promise.resolve(params);
+  const { id } = resolvedParams;
+  const car = await fetchCar(id);
+
+  if (!car) notFound();
+
   const adaptedCar = {
     id: car.id,
     brand: car.brand,
     model: car.model,
     variant: car.variant || `${car.power}CV ${car.fuel}`,
     price: car.price,
-    financePrice: Math.round(car.price * 0.98), 
+    financePrice: Math.round(car.price * 0.98),
     monthlyPrice: car.monthlyPrice || Math.round(car.price / 72),
     fuel: car.fuel,
     mileage: car.mileage,
@@ -36,7 +56,7 @@ export default async function CarPage({ params }: {
     condition: car.condition || "Seminuevo",
     rating: car.rating || 4.8,
     ivaDeductible: car.ivaDeductible || false,
-    images: car.images && car.images.length > 0 ? car.images : ["/placeholder.svg"],
+    images: car.images?.length ? car.images : ["/placeholder.svg"],
     kilometers: car.mileage,
     transmission: car.transmission || "Automática",
     color: car.color,
@@ -58,7 +78,7 @@ export default async function CarPage({ params }: {
     description:
       car.description ||
       `Este ${car.brand} ${car.model} ${car.variant || ""} del año ${car.year} es una excelente opción para quienes buscan un vehículo ${car.fuel.toLowerCase()} de alta calidad. Con ${car.mileage.toLocaleString()} kilómetros, este coche ofrece un rendimiento excepcional y un confort superior.`,
-  }
+  };
 
   return (
     <main className="min-h-screen bg-background">
@@ -77,5 +97,5 @@ export default async function CarPage({ params }: {
         </Suspense>
       </div>
     </main>
-  )
+  );
 }
