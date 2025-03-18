@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Explora nuestra amplia selección de vehículos de segunda mano, de ocasión y km 0.",
 };
 
-async function getFilteredCars(searchParams: Record<string, string | number | boolean | string[] | undefined>) {
+async function getFilteredCars({searchParams} : { searchParams: any}) {
   let filteredCars = cars;
 
   const filters = ["brand", "model", "fuel", "color", "location"];
@@ -43,7 +43,7 @@ async function getFilteredCars(searchParams: Record<string, string | number | bo
   return { allCars: cars, filteredCars };
 }
 
-export default async function CatalogPage({ searchParams }: { searchParams: Record<string, string | number | boolean | string[] | undefined> }) {
+export default async function CatalogPage({ searchParams }: { searchParams: any}) {
   const params = await Promise.resolve(searchParams);
   const { allCars, filteredCars } = await getFilteredCars(params);
 

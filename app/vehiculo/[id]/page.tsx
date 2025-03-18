@@ -12,7 +12,7 @@ async function fetchCar(id: string) {
   return cars.find((c) => c.id === id) || null;
 }
 
-export async function generateMetadata({ params }: { params: Record<string, string> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: any}): Promise<Metadata> {
   const resolvedParams = await Promise.resolve(params);
   const { id } = resolvedParams;
   const car = await fetchCar(id);
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Record<string, stri
   };
 }
 
-export default async function CarPage({ params }: { params: Record<string, string> }) {
+export default async function CarPage({ params }: { params: any }) {
   const resolvedParams = await Promise.resolve(params);
   const { id } = resolvedParams;
   const car = await fetchCar(id);
